@@ -38,8 +38,11 @@ public class ClientConfig {
     public static final String SOCKS_PROXY_CONFIG = "com.rocketmq.socks.proxy.config";
     public static final String DECODE_READ_BODY = "com.rocketmq.read.body";
     public static final String DECODE_DECOMPRESS_BODY = "com.rocketmq.decompress.body";
+    // 表示mq集群的Namesrv地址 多个则用分号分开
     private String namesrvAddr = NameServerAddressUtils.getNameServerAddresses();
+    // 使用客户端程序所在机器的IP地址 PS. 这里对127.0.xxx 192.168.xx  0.xx进行了过滤
     private String clientIP = NetworkUtil.getLocalAddress();
+    // 实例名 重复会导致启动失败
     private String instanceName = System.getProperty("rocketmq.client.name", "DEFAULT");
     private int clientCallbackExecutorThreads = Runtime.getRuntime().availableProcessors();
     protected String namespace;
