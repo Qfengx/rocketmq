@@ -49,11 +49,14 @@ import org.apache.rocketmq.logging.org.slf4j.LoggerFactory;
 public abstract class RebalanceImpl {
     protected static final Logger log = LoggerFactory.getLogger(RebalanceImpl.class);
 
+    // 记录MessageQueue 和ProcessQueue 的客户端实现 processQueue是保存pull消息的本地容器
     protected final ConcurrentMap<MessageQueue, ProcessQueue> processQueueTable = new ConcurrentHashMap<>(64);
     protected final ConcurrentMap<MessageQueue, PopProcessQueue> popProcessQueueTable = new ConcurrentHashMap<>(64);
 
+    // Topic路由信息表
     protected final ConcurrentMap<String/* topic */, Set<MessageQueue>> topicSubscribeInfoTable =
         new ConcurrentHashMap<>();
+    // 订阅关系  当前消费者组订阅的Topic Tag 信息
     protected final ConcurrentMap<String /* topic */, SubscriptionData> subscriptionInner =
         new ConcurrentHashMap<>();
     protected String consumerGroup;
@@ -234,6 +237,7 @@ public abstract class RebalanceImpl {
         return true;
     }
 
+    // 执行重平衡
     public boolean doRebalance(final boolean isOrder) {
         boolean balanced = true;
         Map<String, SubscriptionData> subTable = this.getSubscriptionInner();

@@ -924,7 +924,10 @@ public class MQClientInstance {
         }
     }
 
+    // 消费者实例接收到Broker rebalance通知之后执行
     public void rebalanceImmediately() {
+        // 这里是单独的一个线程进行  即唤醒专门的线程
+        // 内部用的是自定义实现的CountDownLatch2  基于AQS自定义实现的锁
         this.rebalanceService.wakeup();
     }
 
